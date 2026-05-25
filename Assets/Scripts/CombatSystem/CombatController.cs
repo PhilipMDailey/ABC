@@ -131,40 +131,6 @@ public class CombatController : MonoBehaviour, ICombatant
             Die();
     }
 
-    // public void Die()
-    // {
-    //     if (isDead) return;
-    //     isDead = true;
-
-    //     // Stop all running coroutines (hit flash, knockback, etc.)
-    //     // so they don't interfere with the death sequence
-    //     StopAllCoroutines();
-        
-    //     Renderer r = GetComponentInChildren<Renderer>();
-    //     if (r != null)
-    //     {
-    //         r.SetPropertyBlock(null);
-    //         r.material.SetColor("_BaseColor", deathColor);
-    //     }
-
-    //     OnDeath?.Invoke(this);
-    //     Debug.Log($"{combatantName} has died.");
-
-    //     // Unregister immediately so spawner starts refilling during fade
-    //     MobBase mob = GetComponent<MobBase>();
-    //     if (mob != null)
-    //         MobManager.Instance?.UnregisterMob(mob);
-
-    //     // Disable movement and attack
-    //     CharacterController controller = GetComponent<CharacterController>();
-    //     if (controller != null)
-    //         controller.enabled = false;
-
-    //     if (currentAttack != null)
-    //         currentAttack.enabled = false;
-
-    //     StartCoroutine(DeathRoutine());
-    // }
     public void Die()
     {
         if (isDead) return;
