@@ -644,6 +644,8 @@ GameObject:
   - component: {fileID: 828235793}
   - component: {fileID: 828235795}
   - component: {fileID: 828235796}
+  - component: {fileID: 828235797}
+  - component: {fileID: 828235798}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -746,6 +748,8 @@ Transform:
   m_Children:
   - {fileID: 1761886862}
   - {fileID: 1459394592}
+  - {fileID: 2009506321}
+  - {fileID: 1947534302}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &828235789
@@ -878,26 +882,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBasicAttack
   damage: 10
   cooldown: 1
-  attackArc: 180
-  arcPlane: 0
-  diagonalTilt: 45
+  attackPath: {fileID: 828235798}
   attackSpeed: 300
-  attackDistance: 1.5
-  attackEaseIn: 0.3
-  attackEaseOut: 0.3
-  hiltOffset: {x: 0, y: 0, z: 0.5}
-  tipOffset: {x: 0, y: 0, z: 1.5}
   bladeRadius: 0.1
-  attackIndicatorMaterial: {fileID: 2100000, guid: ccf35cb0ce8c1496093c839d447f8429, type: 2}
-  indicatorColor: {r: 1, g: 0.2, b: 0.2, a: 0.8}
-  fadeInFraction: 0.2
-  fadeOutFraction: 0.3
   targetLayers:
     serializedVersion: 2
     m_Bits: 1
   attackerFlashColor: {r: 1, g: 0.5, b: 0.5, a: 1}
-  flashDuration: 0.1
+  flashDuration: 0
   weaponAnimator: {fileID: 0}
+--- !u!114 &828235797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828235784}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3262ebb0c58ce42f1ac09181893ee5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArcAttackPath
+  hiltOffset: {x: 0, y: 0, z: 0.5}
+  tipOffset: {x: 0, y: 0, z: 1.5}
+  easeIn: 0.3
+  easeOut: 0.3
+  attackArc: 142
+  arcPlane: 2
+  diagonalTilt: 40.2
+  attackDistance: 1
+--- !u!114 &828235798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828235784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54c0a402181804ac697405c435d06def, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SplineAttackPath
+  hiltOffset: {x: 0, y: 0, z: 0.5}
+  tipOffset: {x: 0, y: 0, z: 1.5}
+  easeIn: 0.3
+  easeOut: 0.3
+  hiltSpline: {fileID: 2009506320}
+  tipSpline: {fileID: 1947534301}
+  attackDuration: 0.4
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,16 +1096,245 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponAnimator
   WeaponTransform: {fileID: 0}
-  idlePosition: {x: 0, y: 0, z: 0}
-  idleRotation: {x: 0, y: 0, z: 0}
+  idlePosition: {x: 0, y: -1, z: 0.5}
+  idleRotation: {x: -40, y: 0, z: 0}
   blockPosition: {x: 0.3, y: 0.2, z: 0.4}
   blockRotation: {x: 45, y: 0, z: 0}
   transitionSpeed: 10
+  attackIndicatorMaterial: {fileID: 2100000, guid: ccf35cb0ce8c1496093c839d447f8429, type: 2}
+  indicatorColor: {r: 1, g: 0, b: 0, a: 0}
+  fadeInFraction: 0.2
+  fadeOutFraction: 0.3
+  indicatorRadius: 0.05
 --- !u!4 &1761886862 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
   m_PrefabInstance: {fileID: 1436801279}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1947534300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1947534302}
+  - component: {fileID: 1947534301}
+  m_Layer: 0
+  m_Name: WeaponTipSpline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1947534301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947534300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: 0.8699999
+        y: 0.80961996
+        z: 0.64300156
+      TangentIn:
+        x: 0
+        y: 0
+        z: -1
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1
+      Rotation:
+        value:
+          x: 0
+          y: 0
+          z: 0
+          w: 1
+    - Position:
+        x: -1.1800003
+        y: -0.00038009882
+        z: -0.04399872
+      TangentIn:
+        x: 0
+        y: 0
+        z: -1.6934688
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1.6934688
+      Rotation:
+        value:
+          x: 0
+          y: 0.9791939
+          z: 0
+          w: -0.20292683
+    m_MetaData:
+    - Mode: 2
+      Tension: 0.5
+    - Mode: 2
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
+--- !u!4 &1947534302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947534300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 828235788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2009506319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2009506321}
+  - component: {fileID: 2009506320}
+  m_Layer: 0
+  m_Name: WeaponHiltSpline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2009506320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009506319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: 0.6359997
+        y: 0.26561993
+        z: -0.17599869
+      TangentIn:
+        x: 0
+        y: 0
+        z: -1
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1
+      Rotation:
+        value:
+          x: 0
+          y: 0
+          z: 0
+          w: 1
+    - Position:
+        x: -0.57800007
+        y: -0.30238008
+        z: 0.14099884
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.66129375
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.66129375
+      Rotation:
+        value:
+          x: 0
+          y: 0.99761885
+          z: 0
+          w: -0.068968445
+    m_MetaData:
+    - Mode: 2
+      Tension: 0.5
+    - Mode: 2
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
+--- !u!4 &2009506321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009506319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 828235788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2127276930
 GameObject:
   m_ObjectHideFlags: 0

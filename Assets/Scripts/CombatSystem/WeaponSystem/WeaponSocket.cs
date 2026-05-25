@@ -22,49 +22,10 @@ public class WeaponSocket : MonoBehaviour
         combatController = GetComponentInParent<CombatController>();
     }
 
-    // void Start()
-    // {
-    //     // Equip the default weapon if one is assigned
-    //     if (equippedWeapon != null)
-    //         EquipWeapon(equippedWeapon);
-    // }
-
     /// <summary>
     /// Equips a weapon to this socket.
     /// Instantiates the weapon, positions it, and notifies the CombatController.
     /// </summary>
-    // public void EquipWeapon(WeaponBase weapon)
-    // {
-    //     // If equippedWeapon is a prefab asset rather than an instance, clear it
-    //     if (equippedWeapon != null && !equippedWeapon.gameObject.scene.IsValid())
-    //         equippedWeapon = null;
-
-    //     // Unequip current weapon first
-    //     if (equippedWeapon != null)
-    //         UnequipWeapon();
-
-    //     // Instantiate and attach weapon to this socket
-    //     WeaponBase instance = Instantiate(weapon, transform);
-    //     instance.transform.localPosition = weapon.positionOffset;
-    //     instance.transform.localRotation = Quaternion.Euler(weapon.rotationOffset);
-    //     instance.gameObject.name = weapon.weaponName;
-
-    //     equippedWeapon = instance;
-
-    //     // Assign weapon transform to WeaponAnimator
-    //     WeaponAnimator weaponAnimator = GetComponent<WeaponAnimator>();
-    //     if (weaponAnimator != null)
-    //         weaponAnimator.WeaponTransform = instance.transform;
-
-    //     // Apply stat modifiers
-    //     equippedWeapon.ApplyModifiers();
-
-    //     // Notify CombatController of new attack
-    //     if (combatController != null && equippedWeapon.attack != null)
-    //         combatController.currentAttack = equippedWeapon.attack;
-
-    //     Debug.Log($"WeaponSocket [{socketName}]: Equipped {weapon.weaponName}");
-    // }
     public void EquipWeapon(WeaponBase weapon)
     {
         // Clear prefab reference
@@ -90,30 +51,17 @@ public class WeaponSocket : MonoBehaviour
             equippedWeapon.ApplyModifiers(combatController.currentAttack);
 
         Debug.Log($"WeaponSocket [{socketName}]: Equipped {weapon.weaponName}");
+
+        WeaponMarkers markers = equippedWeapon.GetComponent<WeaponMarkers>();
+        SplineAttackPath splinePath = GetComponentInParent<PlayerBasicAttack>()
+            ?.attackPath as SplineAttackPath;
+        if (splinePath != null)
+            splinePath.weaponMarkers = markers;
     }
 
     /// <summary>
     /// Unequips the current weapon from this socket.
     /// </summary>
-    // public void UnequipWeapon()
-    // {
-    //     if (equippedWeapon == null) return;
-
-    //     equippedWeapon.RemoveModifiers();
-
-    //     // Clear attack from CombatController
-    //     if (combatController != null)
-    //         combatController.currentAttack = null;
-
-    //     Destroy(equippedWeapon.gameObject);
-
-    //     WeaponAnimator weaponAnimator = GetComponent<WeaponAnimator>();
-    //     if (weaponAnimator != null)
-    //         weaponAnimator.WeaponTransform = null;
-    //     equippedWeapon = null;
-
-    //     Debug.Log($"WeaponSocket [{socketName}]: Unequipped weapon.");
-    // }
     public void UnequipWeapon()
     {
         if (equippedWeapon == null) return;
@@ -124,6 +72,12 @@ public class WeaponSocket : MonoBehaviour
         WeaponAnimator weaponAnimator = GetComponent<WeaponAnimator>();
         if (weaponAnimator != null)
             weaponAnimator.WeaponTransform = null;
+
+        // Clear marker reference from SplineAttackPath
+        SplineAttackPath splinePath = GetComponentInParent<PlayerBasicAttack>()
+            ?.attackPath as SplineAttackPath;
+        if (splinePath != null)
+            splinePath.weaponMarkers = null;
 
         Destroy(equippedWeapon.gameObject);
         equippedWeapon = null;
