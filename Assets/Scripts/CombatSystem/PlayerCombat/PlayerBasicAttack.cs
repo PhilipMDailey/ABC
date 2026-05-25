@@ -714,44 +714,79 @@ public class PlayerBasicAttack : PlayerAttackBase
         StartCoroutine(AttackRoutine(attacker));
     }
 
+    // IEnumerator AttackRoutine(ICombatant attacker)
+    // {
+    //     // Trigger weapon animation
+    //     WeaponAttackState weaponAttackState = weaponAnimator != null
+    //         ? weaponAnimator.TriggerAttack(attackPath)
+    //         : null;
+
+    //     // Flash attacker
+    //     StartCoroutine(FlashAttacker());
+
+    //     // Track already-hit targets
+    //     HashSet<ICombatant> alreadyHit = new HashSet<ICombatant>();
+
+    //     float duration = attackPath.GetDuration(attackSpeed);
+    //     float elapsed = 0f;
+
+    //     while (elapsed < duration)
+    //     {
+    //         float progress = elapsed / duration;
+
+    //         // Get hilt and tip positions from the path
+    //         Vector3 hiltWorld = attackPath.GetHiltPosition(progress, transform);
+    //         Vector3 tipWorld = attackPath.GetTipPosition(progress, transform);
+
+    //         // Sync progress to weapon animation state
+    //         weaponAttackState?.SetProgress(progress);
+
+    //         // Hit detection along full blade length
+    //         DetectHits(hiltWorld, tipWorld, attacker, alreadyHit);
+
+    //         // Advance with easing
+    //         float easedSpeed = attackPath.GetEasedSpeed(progress, attackSpeed);
+    //         elapsed += (easedSpeed / attackSpeed) * Time.deltaTime;
+
+    //         yield return null;
+    //     }
+
+    //     // Notify weapon animation that attack is complete
+    //     weaponAttackState?.CompleteAttack();
+    // }
     IEnumerator AttackRoutine(ICombatant attacker)
     {
-        // Trigger weapon animation
         WeaponAttackState weaponAttackState = weaponAnimator != null
             ? weaponAnimator.TriggerAttack(attackPath)
             : null;
 
-        // Flash attacker
         StartCoroutine(FlashAttacker());
 
-        // Track already-hit targets
         HashSet<ICombatant> alreadyHit = new HashSet<ICombatant>();
 
-        float duration = attackPath.GetDuration(attackSpeed);
+        // attackSpeed acts as a multiplier — higher speed = shorter duration
+        float baseDuration = attackPath.GetDuration(attackSpeed);
+        float duration = baseDuration / attackSpeed;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             float progress = elapsed / duration;
 
-            // Get hilt and tip positions from the path
             Vector3 hiltWorld = attackPath.GetHiltPosition(progress, transform);
             Vector3 tipWorld = attackPath.GetTipPosition(progress, transform);
 
-            // Sync progress to weapon animation state
             weaponAttackState?.SetProgress(progress);
 
-            // Hit detection along full blade length
             DetectHits(hiltWorld, tipWorld, attacker, alreadyHit);
 
-            // Advance with easing
-            float easedSpeed = attackPath.GetEasedSpeed(progress, attackSpeed);
-            elapsed += (easedSpeed / attackSpeed) * Time.deltaTime;
+            // GetEasedSpeed returns a 0-1 multiplier scaled by easing
+            float easedMultiplier = attackPath.GetEasedSpeed(progress, 1f);
+            elapsed += easedMultiplier * Time.deltaTime;
 
             yield return null;
         }
 
-        // Notify weapon animation that attack is complete
         weaponAttackState?.CompleteAttack();
     }
 
