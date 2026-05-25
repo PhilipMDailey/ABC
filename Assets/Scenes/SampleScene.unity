@@ -425,8 +425,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MobSpawner
   spawnEntries:
   - prefab: {fileID: 7274723897058938368, guid: 5536f993fd2a546f3bf9714ca0b10e0d, type: 3}
-    initialCount: 20
-    maxCount: 20
+    initialCount: 0
+    maxCount: 0
     spawnInterval: 5
     activeCount: 0
     spawnTimer: 0
@@ -642,8 +642,8 @@ GameObject:
   - component: {fileID: 828235789}
   - component: {fileID: 828235791}
   - component: {fileID: 828235793}
-  - component: {fileID: 828235792}
-  - component: {fileID: 828235794}
+  - component: {fileID: 828235795}
+  - component: {fileID: 828235796}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -743,7 +743,9 @@ Transform:
   m_LocalPosition: {x: 11.09, y: 0.5383801, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1761886862}
+  - {fileID: 1459394592}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &828235789
@@ -818,37 +820,6 @@ MonoBehaviour:
   m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &828235792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 828235784}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f0d9c770a5694a0eb33f5cefcb0531a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeAttack
-  damage: 100
-  cooldown: 1
-  attackArc: 168
-  arcPlane: 2
-  diagonalTilt: 45
-  attackSpeed: 900
-  attackDistance: 1.5
-  attackEaseIn: 0.775
-  attackEaseOut: 0.279
-  attackSphereMaterial: {fileID: 2100000, guid: ccf35cb0ce8c1496093c839d447f8429, type: 2}
-  sphereSize: 0.3
-  sphereColor: {r: 1, g: 0.2, b: 0.2, a: 0.8}
-  fadeInFraction: 0.338
-  fadeOutFraction: 0.311
-  targetLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  attackerFlashColor: {r: 1, g: 0.5, b: 0.5, a: 1}
-  flashDuration: 1
 --- !u!114 &828235793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,7 +834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatController
   combatantName: Combatant
   maxHealth: 100
-  currentAttack: {fileID: 828235794}
+  currentAttack: {fileID: 828235796}
   knockbackForce: 5
   knockbackDuration: 0.2
   hitFlashCount: 3
@@ -875,7 +846,25 @@ MonoBehaviour:
   deathFadeOut: 2
   deathFadeMaterial: {fileID: 2100000, guid: 95b41765d7106445c99f16e8eca00076, type: 2}
   deathColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &828235794
+  deathForce: {x: 0, y: 5, z: 0}
+  deathTorque: {x: 0, y: 10, z: 5}
+--- !u!114 &828235795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828235784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ca7caf1201034f1ca8b9795af6d00ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponManager
+  primarySocket: {fileID: 1459394591}
+  weaponInventory:
+  - {fileID: 6466861558195613316, guid: 0727db485c585184ca4174bf10c5e610, type: 3}
+  startingWeaponIndex: 0
+--- !u!114 &828235796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -887,25 +876,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21414de838fa14c7b8ec01526fd68627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBasicAttack
-  damage: 100
+  damage: 10
   cooldown: 1
-  attackArc: 168
-  arcPlane: 2
+  attackArc: 180
+  arcPlane: 0
   diagonalTilt: 45
-  attackSpeed: 900
+  attackSpeed: 300
   attackDistance: 1.5
-  attackEaseIn: 0.775
-  attackEaseOut: 0.27
+  attackEaseIn: 0.3
+  attackEaseOut: 0.3
+  hiltOffset: {x: 0, y: 0, z: 0.5}
+  tipOffset: {x: 0, y: 0, z: 1.5}
+  bladeRadius: 0.1
   attackIndicatorMaterial: {fileID: 2100000, guid: ccf35cb0ce8c1496093c839d447f8429, type: 2}
-  sphereSize: 0.3
-  sphereColor: {r: 1, g: 0.2, b: 0.2, a: 0.8}
-  fadeInFraction: 0.338
-  fadeOutFraction: 0.311
+  indicatorColor: {r: 1, g: 0.2, b: 0.2, a: 0.8}
+  fadeInFraction: 0.2
+  fadeOutFraction: 0.3
   targetLayers:
     serializedVersion: 2
     m_Bits: 1
   attackerFlashColor: {r: 1, g: 0.5, b: 0.5, a: 1}
-  flashDuration: 0
+  flashDuration: 0.1
+  weaponAnimator: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +947,133 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1436801279
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 828235788}
+    m_Modifications:
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.895
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.014
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 865706199390598846, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+      propertyPath: m_Name
+      value: Head_Prop_Helmet_Viking_01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+--- !u!1 &1459394590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1459394592}
+  - component: {fileID: 1459394591}
+  - component: {fileID: 1459394593}
+  m_Layer: 0
+  m_Name: RightHandSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1459394591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459394590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a094105d9d87e48e59c7d13039925cb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponSocket
+  socketName: RightHand
+  equippedWeapon: {fileID: 6466861558195613316, guid: 0727db485c585184ca4174bf10c5e610, type: 3}
+--- !u!4 &1459394592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459394590}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 828235788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1459394593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459394590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3a964f1f58a499f810394c0117da93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponAnimator
+  WeaponTransform: {fileID: 0}
+  idlePosition: {x: 0, y: 0, z: 0}
+  idleRotation: {x: 0, y: 0, z: 0}
+  blockPosition: {x: 0.3, y: 0.2, z: 0.4}
+  blockRotation: {x: 45, y: 0, z: 0}
+  transitionSpeed: 10
+--- !u!4 &1761886862 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 524752502931319812, guid: 57fd42345177f874bbd2743a45cde74e, type: 3}
+  m_PrefabInstance: {fileID: 1436801279}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2127276930
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,7 +1116,7 @@ MonoBehaviour:
   octaves: 2
   persistence: 0.157
   lacunarity: 2
-  navMeshSurface: {fileID: 0}
+  navMeshSurface: {fileID: 2127276936}
 --- !u!33 &2127276932
 MeshFilter:
   m_ObjectHideFlags: 0
